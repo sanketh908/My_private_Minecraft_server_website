@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Elysium Server Website</title>
+  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="stylesheet" href="/api/theme.css">
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    /* Specific styles for Dashboard layout */
+    body.admin-body {
+      background-color: #050807;
+      display: flex;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Auth Wrapper */
+    .auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      background: radial-gradient(circle, rgba(16, 24, 21, 0.9) 0%, rgba(5, 8, 7, 1) 100%);
+      padding: 20px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .auth-logo {
+      max-width: 100px;
+      margin-bottom: 25px;
+      filter: drop-shadow(0 0 15px var(--primary-glow));
+    }
+
+    .auth-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .auth-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 8px var(--primary-glow);
+    }
+
+    .auth-error {
+      color: #ff3838;
+      background: rgba(255, 56, 56, 0.1);
+      border: 1px solid rgba(255, 56, 56, 0.2);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    /* Dashboard Layout */
+    .dashboard-container {
+      display: none;
+      width: 100%;
+      grid-template-columns: 260px 1fr 450px; /* Sidebar, Controls, Preview Frame */
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .dashboard-sidebar {
+      background: #030504;
+      border-right: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .sidebar-header {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .sidebar-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 10px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-item button {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 12px 15px;
+      text-align: left;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 5px;
+      transition: var(--transition);
+    }
+
+    .sidebar-item button:hover {
+      background: rgba(255, 255, 255, 0.03);
+      color: #fff;
+    }
+
+    .sidebar-item.active button {
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--primary-accent);
+      border-left: 3px solid var(--primary-accent);
+      font-weight: 600;
+    }
+
+    .sidebar-footer {
+      padding: 20px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 10px;
+      background: rgba(255, 56, 56, 0.1);
+      border: 1px solid rgba(255, 56, 56, 0.2);
+      color: #ff5252;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-logout:hover {
+      background: #ff3838;
+      color: #fff;
+    }
+
+    /* Main Content Panel */
+    .dashboard-panel {
+      padding: 40px;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 20px;
+    }
+
+    .panel-header h1 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Form specific styles */
+    .row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .col {
+      flex: 1;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .toast-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary-accent);
+      color: #000;
+      padding: 14px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+      z-index: 2000;
+      display: none;
+      animation: slide-up 0.3s ease;
+    }
+
+    /* Table/Grids list items */
+    .item-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .item-list-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 15px 20px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .item-list-row:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .item-details {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .item-icon-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-accent);
+    }
+
+    .item-title-meta h4 {
+      margin-bottom: 2px;
+      color: #fff;
+    }
+
+    .item-title-meta p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    .btn-icon.delete:hover {
+      background: rgba(255, 56, 56, 0.15);
+      color: #ff5252;
+      border-color: rgba(255, 56, 56, 0.3);
+    }
+
+    .btn-add-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px dashed var(--primary-accent);
+      color: var(--primary-accent);
+      width: 100%;
+      padding: 15px;
+      justify-content: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .btn-add-item:hover {
+      background: rgba(0, 255, 136, 0.2);
+    }
+
+    /* Dynamic Preview Split Iframe */
+    .preview-sidebar {
+      background: #030504;
+      border-left: 1px solid var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+
+    .preview-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preview-header h3 {
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #000;
+    }
+
+    /* Modal Form Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 8, 7, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 500px;
+      background: #0a0f0d;
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-family: var(--font-display);
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 24px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* Image Preview helper */
+    .image-upload-preview {
+      width: 100%;
+      height: 120px;
+      border: 1px dashed var(--glass-border);
+      border-radius: 6px;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Status select pills */
+    .status-select-pills {
+      display: flex;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .status-pill {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--glass-border);
+      background: rgba(0,0,0,0.3);
+      color: var(--text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      transition: var(--transition);
+    }
+
+    .status-pill.active {
+      border-color: var(--primary-accent);
+      background: rgba(0, 255, 136, 0.1);
+      color: var(--primary-accent);
+    }
+
+    /* Color picker wrapper */
+    .color-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--glass-border);
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .color-picker-row input[type="color"] {
+      border: none;
+      background: transparent;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .color-picker-info h5 {
+      color: #fff;
+      font-size: 0.9rem;
+      margin-bottom: 2px;
+    }
+
+    .color-picker-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .dashboard-container {
+        grid-template-columns: 240px 1fr; /* Hide preview on smaller displays */
+      }
+      .preview-sidebar {
+        display: none;
+      }
+    }
+
+    @keyframes slide-up {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Authentication Module -->
+  <div class="auth-wrapper" id="auth-panel">
+    <div class="auth-card glass-card">
+      <img src="/assets/logo.png" alt="Elysium Logo" class="auth-logo">
+      <h2>Server Portal Admin</h2>
+      <p>Secure authentication required to make changes.</p>
+      
+      <div class="auth-error" id="login-error">Invalid Username or Password.</div>
+      
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          <i data-lucide="lock"></i> Authenticate
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Module -->
+  <div class="dashboard-container" id="dashboard-panel">
+    <!-- Sidebar Navigation -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <img src="/assets/logo.png" alt="Elysium Logo" style="height: 32px;">
+        <h2>Elysium Admin</h2>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="sidebar-item active" data-tab="general">
+          <button><i data-lucide="settings"></i> General Settings</button>
+        </li>
+        <li class="sidebar-item" data-tab="hero">
+          <button><i data-lucide="image"></i> Hero Section</button>
+        </li>
+        <li class="sidebar-item" data-tab="announcements">
+          <button><i data-lucide="bell"></i> Announcements</button>
+        </li>
+        <li class="sidebar-item" data-tab="about">
+          <button><i data-lucide="book-open"></i> About Content</button>
+        </li>
+        <li class="sidebar-item" data-tab="features">
+          <button><i data-lucide="star"></i> Server Features</button>
+        </li>
+        <li class="sidebar-item" data-tab="news">
+          <button><i data-lucide="file-text"></i> News & Logs</button>
+        </li>
+        <li class="sidebar-item" data-tab="gallery">
+          <button><i data-lucide="aperture"></i> Screenshots</button>
+        </li>
+        <li class="sidebar-item" data-tab="stats">
+          <button><i data-lucide="bar-chart-2"></i> Statistics</button>
+        </li>
+        <li class="sidebar-item" data-tab="staff">
+          <button><i data-lucide="users"></i> Staff Team</button>
+        </li>
+        <li class="sidebar-item" data-tab="faq">
+          <button><i data-lucide="help-circle"></i> FAQ Items</button>
+        </li>
+        <li class="sidebar-item" data-tab="store">
+          <button><i data-lucide="shopping-cart"></i> Store & Votes</button>
+        </li>
+        <li class="sidebar-item" data-tab="security">
+          <button><i data-lucide="shield-alert"></i> Credentials</button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logout-btn">
+          <i data-lucide="log-out"></i> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Content Workspace -->
+    <main class="dashboard-panel">
+      <!-- General Tab -->
+      <section class="tab-content active" id="tab-general">
+        <div class="panel-header">
+          <h1>General Configuration</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveGeneralSettings()"><i data-lucide="save"></i> Save Config</button>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Server Name</label>
+              <input type="text" class="form-control" id="gen-server-name">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Minecraft Server Version</label>
+              <input type="text" class="form-control" id="gen-server-version">
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Server IP / Host</label>
+              <input type="text" class="form-control" id="gen-server-ip">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Server Port (Default 25565)</label>
+              <input type="number" class="form-control" id="gen-server-port">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Discord Invite URL</label>
+          <input type="text" class="form-control" id="gen-discord-invite">
+        </div>
+
+        <div class="form-group">
+          <label>Support Email Address</label>
+          <input type="text" class="form-control" id="gen-support-email">
+        </div>
+
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; margin: 30px 0 15px; color:#fff; border-bottom: 1px solid var(--glass-border); padding-bottom:8px;">Live status override</h3>
+        
+        <div class="form-group">
+          <label>Status Mode</label>
+          <div class="status-select-pills">
+            <div class="status-pill active" data-mode="auto" id="pill-auto" onclick="setStatusOverride('auto')">Auto Query</div>
+            <div class="status-pill" data-mode="online" id="pill-online" onclick="setStatusOverride('online')">Force Online</div>
+            <div class="status-pill" data-mode="offline" id="pill-offline" onclick="setStatusOverride('offline')">Force Offline</div>
+            <div class="status-pill" data-mode="maintenance" id="pill-maint" onclick="setStatusOverride('maintenance')">Maintenance</div>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">'Auto Query' uses Minecraft protocol to ping your IP. Other options enforce manual overrides.</p>
+        </div>
+
+        <div class="row" id="mock-player-counts-row">
+          <div class="col">
+            <div class="form-group">
+              <label>Mock Players Count</label>
+              <input type="number" class="form-control" id="gen-mock-players">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Mock Max Players</label>
+              <input type="number" class="form-control" id="gen-mock-max">
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; margin: 35px 0 15px; color:#fff; border-bottom: 1px solid var(--glass-border); padding-bottom:8px;">Color Branding Theme</h3>
+        
+        <div class="color-picker-row">
+          <input type="color" id="theme-primary" oninput="updateLiveTheme()">
+          <div class="color-picker-info">
+            <h5>Primary Accent</h5>
+            <p>Applied to links, buttons, highlight borders, and emerald glows.</p>
+          </div>
+        </div>
+
+        <div class="color-picker-row">
+          <input type="color" id="theme-secondary" oninput="updateLiveTheme()">
+          <div class="color-picker-info">
+            <h5>Secondary Accent</h5>
+            <p>Applied to secondary CTAs, discord details, and cyan glow zones.</p>
+          </div>
+        </div>
+
+        <div class="color-picker-row">
+          <input type="color" id="theme-gold" oninput="updateLiveTheme()">
+          <div class="color-picker-info">
+            <h5>Gold Accent</h5>
+            <p>Applied to popular store cards, announcement tickers, and trophies.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hero Section Tab -->
+      <section class="tab-content" id="tab-hero">
+        <div class="panel-header">
+          <h1>Hero Configuration</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveHeroSettings()"><i data-lucide="save"></i> Save Hero</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Hero Title</label>
+          <input type="text" class="form-control" id="hero-edit-title">
+        </div>
+
+        <div class="form-group">
+          <label>Hero Subtitle</label>
+          <textarea class="form-control" id="hero-edit-subtitle"></textarea>
+        </div>
+
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; margin: 30px 0 15px; color:#fff; border-bottom: 1px solid var(--glass-border); padding-bottom:8px;">Hero Background Banner</h3>
+        
+        <div class="form-group">
+          <label>Upload Banner Image</label>
+          <div class="image-upload-preview" id="hero-banner-preview">No Banner Loaded</div>
+          <input type="file" id="hero-banner-file" style="display:none;" onchange="uploadImage('hero-banner-file', 'hero-banner-preview', '/api/upload/hero-banner', 'hero-banner-path')">
+          <button class="btn btn-secondary" onclick="document.getElementById('hero-banner-file').click()" style="padding:8px 16px; font-size:0.85rem;"><i data-lucide="upload"></i> Upload Image</button>
+          <input type="hidden" id="hero-banner-path">
+        </div>
+      </section>
+
+      <!-- Announcements Tab -->
+      <section class="tab-content" id="tab-announcements">
+        <div class="panel-header">
+          <h1>Manage Announcement Ticker</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveAnnouncements()"><i data-lucide="save"></i> Save Announcements</button>
+          </div>
+        </div>
+
+        <div id="announcements-container">
+          <!-- Announcement Row -->
+        </div>
+      </section>
+
+      <!-- About Content Tab -->
+      <section class="tab-content" id="tab-about">
+        <div class="panel-header">
+          <h1>About Server Content</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveAboutSettings()"><i data-lucide="save"></i> Save Content</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>About Heading</label>
+          <input type="text" class="form-control" id="about-edit-title">
+        </div>
+
+        <div class="form-group">
+          <label>About Content Text</label>
+          <textarea class="form-control" id="about-edit-content" style="min-height: 250px;"></textarea>
+        </div>
+      </section>
+
+      <!-- Server Features Tab -->
+      <section class="tab-content" id="tab-features">
+        <div class="panel-header">
+          <h1>Server Features Cards</h1>
+        </div>
+        <button class="btn-add-item" onclick="openFeatureModal()"><i data-lucide="plus-circle"></i> Add New Feature Card</button>
+        <div class="item-list-container" id="features-list">
+          <!-- Features list items -->
+        </div>
+      </section>
+
+      <!-- News & Logs Tab -->
+      <section class="tab-content" id="tab-news">
+        <div class="panel-header">
+          <h1>News & Updates Posts</h1>
+        </div>
+        <button class="btn-add-item" onclick="openNewsModal()"><i data-lucide="plus-circle"></i> Create Announcement / Log</button>
+        <div class="item-list-container" id="news-list">
+          <!-- News list items -->
+        </div>
+      </section>
+
+      <!-- Screenshots Tab -->
+      <section class="tab-content" id="tab-gallery">
+        <div class="panel-header">
+          <h1>Screenshots Gallery</h1>
+        </div>
+        <button class="btn-add-item" onclick="openGalleryModal()"><i data-lucide="plus-circle"></i> Upload Screenshot</button>
+        <div class="item-list-container" id="gallery-list">
+          <!-- Gallery list items -->
+        </div>
+      </section>
+
+      <!-- Statistics Tab -->
+      <section class="tab-content" id="tab-stats">
+        <div class="panel-header">
+          <h1>Dynamic Counter Stats</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveStatsSettings()"><i data-lucide="save"></i> Save Stats</button>
+          </div>
+        </div>
+        <div id="stats-inputs-container">
+          <!-- Stats Cards Inputs dynamic -->
+        </div>
+      </section>
+
+      <!-- Staff Team Tab -->
+      <section class="tab-content" id="tab-staff">
+        <div class="panel-header">
+          <h1>Staff Directory Cards</h1>
+        </div>
+        <button class="btn-add-item" onclick="openStaffModal()"><i data-lucide="plus-circle"></i> Add Staff Member</button>
+        <div class="item-list-container" id="staff-list">
+          <!-- Staff list items -->
+        </div>
+      </section>
+
+      <!-- FAQ Items Tab -->
+      <section class="tab-content" id="tab-faq">
+        <div class="panel-header">
+          <h1>FAQ Accordions</h1>
+        </div>
+        <button class="btn-add-item" onclick="openFaqModal()"><i data-lucide="plus-circle"></i> Add FAQ Accordion</button>
+        <div class="item-list-container" id="faq-list">
+          <!-- FAQ items -->
+        </div>
+      </section>
+
+      <!-- Store & Votes Tab -->
+      <section class="tab-content" id="tab-store">
+        <div class="panel-header">
+          <h1>Ranks Store & Voting Links</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="saveStoreSettings()"><i data-lucide="save"></i> Save Settings</button>
+          </div>
+        </div>
+
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; margin: 10px 0 15px; color:#fff; border-bottom: 1px solid var(--glass-border); padding-bottom:8px;">Store Page Settings</h3>
+        <div class="form-group">
+          <label>Store Subtitle Description</label>
+          <textarea class="form-control" id="store-edit-desc"></textarea>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <h4 style="margin: 20px 0 10px; color:#fff;">Store Tier Packages</h4>
+            <div id="store-ranks-inputs-container" style="display:flex; flex-direction:column; gap:15px;">
+              <!-- Ranks Inputs -->
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-family:var(--font-display); font-size:1.1rem; text-transform:uppercase; margin: 35px 0 15px; color:#fff; border-bottom: 1px solid var(--glass-border); padding-bottom:8px;">Voting Rewards</h3>
+        <div class="form-group">
+          <label>Voting Description</label>
+          <textarea class="form-control" id="vote-edit-desc"></textarea>
+        </div>
+        <div id="voting-links-inputs-container" style="display:flex; flex-direction:column; gap:15px;">
+          <!-- Vote links Inputs -->
+        </div>
+      </section>
+
+      <!-- Security Tab -->
+      <section class="tab-content" id="tab-security">
+        <div class="panel-header">
+          <h1>Change Administrative Password</h1>
+          <div class="panel-actions">
+            <button class="btn btn-primary" onclick="changeAdminPassword()"><i data-lucide="shield-check"></i> Update Password</button>
+          </div>
+        </div>
+
+        <div class="form-group" style="max-width: 450px;">
+          <label>Current Password</label>
+          <input type="password" class="form-control" id="sec-current-pass" autocomplete="current-password">
+        </div>
+
+        <div class="form-group" style="max-width: 450px;">
+          <label>New Password</label>
+          <input type="password" class="form-control" id="sec-new-pass" autocomplete="new-password">
+        </div>
+      </section>
+    </main>
+
+    <!-- Dynamic Preview Iframe Panel -->
+    <aside class="preview-sidebar">
+      <div class="preview-header">
+        <h3><i data-lucide="eye" style="color:var(--primary-accent)"></i> Live Preview</h3>
+        <button class="btn btn-secondary" onclick="reloadPreview()" style="padding:6px 12px; font-size:0.75rem;"><i data-lucide="refresh-cw" style="width:12px; height:12px;"></i> Reload</button>
+      </div>
+      <iframe src="/" class="preview-iframe" id="preview-frame"></iframe>
+    </aside>
+  </div>
+
+  <!-- --- MODAL DIALOGS --- -->
+
+  <!-- Feature Modals -->
+  <div class="modal-overlay" id="feature-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="feature-modal-title">Add Feature</h3>
+        <button class="btn-icon" onclick="closeModal('feature-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="feature-card-id">
+        <div class="form-group">
+          <label>Feature Title</label>
+          <input type="text" class="form-control" id="feature-edit-card-title">
+        </div>
+        <div class="form-group">
+          <label>Feature Icon (Lucide Icon name, e.g. shield, swords, coins)</label>
+          <input type="text" class="form-control" id="feature-edit-card-icon" placeholder="shield">
+        </div>
+        <div class="form-group">
+          <label>Feature Description</label>
+          <textarea class="form-control" id="feature-edit-card-desc"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('feature-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitFeatureCard()">Save Feature</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Modal -->
+  <div class="modal-overlay" id="news-modal">
+    <div class="modal-card" style="max-width:600px;">
+      <div class="modal-header">
+        <h3 id="news-modal-title">Create News Post</h3>
+        <button class="btn-icon" onclick="closeModal('news-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="news-post-id">
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" class="form-control" id="news-edit-post-title">
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label>Category</label>
+              <select class="form-control" id="news-edit-post-category">
+                <option value="Announcement">Announcement</option>
+                <option value="Update">Update</option>
+                <option value="Event">Event</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>Author</label>
+              <input type="text" class="form-control" id="news-edit-post-author" value="Admin">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Post Banner Image</label>
+          <div class="image-upload-preview" id="news-image-preview">No Image Selected</div>
+          <input type="file" id="news-image-file" style="display:none;" onchange="uploadImage('news-image-file', 'news-image-preview', '/api/upload/news-image', 'news-image-path')">
+          <button class="btn btn-secondary" onclick="document.getElementById('news-image-file').click()" style="padding:6px 12px; font-size:0.8rem;"><i data-lucide="upload"></i> Select Image</button>
+          <input type="hidden" id="news-image-path">
+        </div>
+        <div class="form-group">
+          <label>Content Details</label>
+          <textarea class="form-control" id="news-edit-post-content" style="min-height:160px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('news-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitNewsPost()">Save Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Modal -->
+  <div class="modal-overlay" id="gallery-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Upload Screenshot</h3>
+        <button class="btn-icon" onclick="closeModal('gallery-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Screenshot Title</label>
+          <input type="text" class="form-control" id="gallery-edit-title" placeholder="Spawn Lobby, Nether Hub">
+        </div>
+        <div class="form-group">
+          <label>Screenshot Description</label>
+          <input type="text" class="form-control" id="gallery-edit-desc">
+        </div>
+        <div class="form-group">
+          <label>Upload Screenshot Image</label>
+          <div class="image-upload-preview" id="gallery-image-preview">Choose File</div>
+          <input type="file" id="gallery-image-file" style="display:none;" onchange="uploadImage('gallery-image-file', 'gallery-image-preview', '/api/upload/gallery-image', 'gallery-image-path')">
+          <button class="btn btn-secondary" onclick="document.getElementById('gallery-image-file').click()" style="padding:8px 16px; font-size:0.85rem;"><i data-lucide="upload"></i> Select File</button>
+          <input type="hidden" id="gallery-image-path">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('gallery-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitGalleryItem()">Save Screenshot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Staff Modal -->
+  <div class="modal-overlay" id="staff-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="staff-modal-title">Add Staff Member</h3>
+        <button class="btn-icon" onclick="closeModal('staff-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="staff-member-id">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" id="staff-edit-name">
+        </div>
+        <div class="form-group">
+          <label>Role</label>
+          <select class="form-control" id="staff-edit-role">
+            <option value="Owner">Owner</option>
+            <option value="Admin">Admin</option>
+            <option value="Moderator">Moderator</option>
+            <option value="Developer">Developer</option>
+            <option value="Builder">Builder</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Avatar Photo</label>
+          <div class="image-upload-preview" id="staff-avatar-preview" style="width: 100px; height: 100px; border-radius:50%;">No Photo</div>
+          <input type="file" id="staff-avatar-file" style="display:none;" onchange="uploadImage('staff-avatar-file', 'staff-avatar-preview', '/api/upload/staff-avatar', 'staff-avatar-path')">
+          <button class="btn btn-secondary" onclick="document.getElementById('staff-avatar-file').click()" style="padding:6px 12px; font-size:0.8rem;"><i data-lucide="image"></i> Upload Avatar</button>
+          <input type="hidden" id="staff-avatar-path">
+        </div>
+        <div class="form-group">
+          <label>Short Biography / Description</label>
+          <textarea class="form-control" id="staff-edit-desc"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('staff-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitStaffMember()">Save Member</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ Modal -->
+  <div class="modal-overlay" id="faq-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="faq-modal-title">Add FAQ Entry</h3>
+        <button class="btn-icon" onclick="closeModal('faq-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="faq-id">
+        <div class="form-group">
+          <label>Question</label>
+          <input type="text" class="form-control" id="faq-edit-question">
+        </div>
+        <div class="form-group">
+          <label>Answer Explanation</label>
+          <textarea class="form-control" id="faq-edit-answer" style="min-height: 120px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('faq-modal')">Cancel</button>
+        <button class="btn btn-primary" onclick="submitFaqItem()">Save FAQ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-notification" id="toast">Settings Saved Successfully!</div>
+
+  <!-- Icons Pack -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Admin panel script logic -->
+  <script src="/public/admin.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>
