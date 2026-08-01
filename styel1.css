@@ -1,0 +1,9 @@
+ol{
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    font-size: 26px;
+}
+li{
+    cursor: pointer;
+}
