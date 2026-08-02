@@ -4,55 +4,218 @@
     <link rel="stylesheet" href="styel1.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My minecrat server </title>
+    <title>My Minecraft Server</title>
 </head>
 <body>
-    <nev>
-        frinds server
-        <ol>
-            <li>home</li>        
-            <li>build's</li>        
-            <li>rules</li>
-            <li>join the server</li>
-        </ol>
-        
-    </nev>
-    <main>
-        <section>
-            <h1> Welcome to Our Minecraft Server!</h1>
-            <p>           
-                Welcome to our small Minecraft server! This is a private world where my friends and I come together to build, explore, and have fun. We've created amazing bases, farms, and adventures while making great memories together.
-                Whether we're surviving the night, defeating bosses, or working on big projects, there's always something exciting happening. This server is our shared world, built through teamwork, creativity, and fun.
-                
+    <header class="site-header">
+        <nav class="nav">
+            <a href="#home" class="logo">
+                <span class="logo-icon">&#9608;</span> Friends Server
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#builds">Builds</a></li>
+                <li><a href="#rules">Rules</a></li>
+                <li><a href="#join">Join the Server</a></li>
+            </ul>
+        </nav>
+    </header>
 
-            </p>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <span class="hero-badge">Private Server</span>
+                <h1>Welcome to Our Minecraft Server!</h1>
+                <p>
+                    Welcome to our small Minecraft server! This is a private world where my friends and I come
+                    together to build, explore, and have fun. We've created amazing bases, farms, and adventures
+                    while making great memories together.
+                </p>
+                <p>
+                    Whether we're surviving the night, defeating bosses, or working on big projects, there's
+                    always something exciting happening. This server is our shared world, built through teamwork,
+                    creativity, and fun.
+                </p>
+                <div class="hero-actions">
+                    <a href="#builds" class="btn btn-primary">Explore Our Builds</a>
+                    <a href="#join" class="btn btn-ghost">Join the Server</a>
+                </div>
+            </div>
         </section>
-        <h1>Build's</h1>
-        <section class="crepper_farm_section">
-            <h1>Creeper Farm</h1>
-            <p>This Creeper Farm is one of the most efficient mob farms on our server, designed to produce a steady supply of gunpowder with minimal effort. It can generate over 3,000 gunpowder per hour, making it perfect for crafting rockets, TNT, and other useful items.</p>
-             <img src="imgs/creeper farm.png" alt="bamboo farm">
-            <ul class="crepper_farm_list">
-                <li>Production: 3,000+ Gunpowder per Hour</li>
-                <li>Drops: Gunpowder</li>
-                <li>Uses: Firework Rockets, TNT, Fire Charges, and more.</li>
-                <li>location: x:71 y:67 z:82</li>
-            </ul>
+
+        <section id="builds" class="section">
+            <h2 class="section-title">Our Builds</h2>
+            <p class="section-subtitle">Everything we've built together, all in one world.</p>
+
+            <div class="farms-grid">
+                <article class="card">
+                    <img src="imgs/creeper farm.png" alt="Creeper Farm">
+                    <div class="card-body">
+                        <h3>Creeper Farm</h3>
+                        <p>One of the most efficient mob farms on our server, producing a steady supply of gunpowder with minimal effort.</p>
+                        <ul class="card-list">
+                            <li>Production: 3,000+ Gunpowder per Hour</li>
+                            <li>Drops: Gunpowder</li>
+                            <li>Uses: Firework Rockets, TNT, Fire Charges</li>
+                            <li>Location: x:71 y:67 z:82</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/tree farm.png" alt="Multi-Tree Farm">
+                    <div class="card-body">
+                        <h3>Multi-Tree Farm</h3>
+                        <p>A fully automated wood farm capable of producing up to 20,000 logs per hour.</p>
+                        <ul class="card-list">
+                            <li>Production: Up to 20,000 Logs per Hour</li>
+                            <li>Supported Trees: Oak, Birch, Spruce</li>
+                            <li>Uses: Building, Crafting, Fuel, Redstone</li>
+                            <li>Location: x:-6 y:64 z:142</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/iron farm.png" alt="Iron Farm">
+                    <div class="card-body">
+                        <h3>Iron Farm</h3>
+                        <p>An automatic iron farm that keeps our chests full of iron ingots around the clock.</p>
+                        <ul class="card-list">
+                            <li>Production: Automated Iron Ingots</li>
+                            <li>Uses: Tools, Armor, Redstone, Building</li>
+                            <li>Location: Overworld</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/blazz fram.png" alt="Blaze Farm">
+                    <div class="card-body">
+                        <h3>Blaze Farm</h3>
+                        <p>A fortified fortress farm for a steady supply of blaze rods and XP.</p>
+                        <ul class="card-list">
+                            <li>Drops: Blaze Rods</li>
+                            <li>Uses: Brewing Stands, Blaze Powder, Fuel</li>
+                            <li>Location: The Nether</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/piglin farm.png" alt="Piglin Farm">
+                    <div class="card-body">
+                        <h3>Piglin Farm</h3>
+                        <p>A Nether farm harvesting gold and piglin drops for trading and resources.</p>
+                        <ul class="card-list">
+                            <li>Drops: Gold, Gilded Blackstone</li>
+                            <li>Uses: Bartering, Gold Ingots</li>
+                            <li>Location: The Nether</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/wither skell farm.png" alt="Wither Skeleton Farm">
+                    <div class="card-body">
+                        <h3>Wither Skeleton Farm</h3>
+                        <p>A Nether fortress farm collecting wither skeleton heads and coal for the team.</p>
+                        <ul class="card-list">
+                            <li>Drops: Wither Skeleton Heads, Coal</li>
+                            <li>Uses: Wither Summoning, Coal Fuel</li>
+                            <li>Location: The Nether</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/cobble farm.png" alt="Cobblestone Farm">
+                    <div class="card-body">
+                        <h3>Cobblestone Farm</h3>
+                        <p>A generator-style farm producing endless cobblestone for big builds.</p>
+                        <ul class="card-list">
+                            <li>Production: Endless Cobblestone</li>
+                            <li>Uses: Building, Stone Tools, Furnaces</li>
+                            <li>Location: Overworld</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/bamboo.png" alt="Bamboo Farm">
+                    <div class="card-body">
+                        <h3>Bamboo Farm</h3>
+                        <p>A fast-growing farm feeding our fuel needs and scaffolding projects.</p>
+                        <ul class="card-list">
+                            <li>Production: Fast Bamboo Growth</li>
+                            <li>Uses: Fuel, Scaffolding, Bamboo Blocks</li>
+                            <li>Location: Overworld</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="imgs/super smlrt.png" alt="Super Smelter">
+                    <div class="card-body">
+                        <h3>Super Smelter</h3>
+                        <p>A massive automated smelting array that turns ore and food into finished goods fast.</p>
+                        <ul class="card-list">
+                            <li>Production: High-Speed Auto-Smelting</li>
+                            <li>Uses: Ore Processing, Cooking, Bulk Smelting</li>
+                            <li>Location: Overworld</li>
+                        </ul>
+                    </div>
+                </article>
+            </div>
         </section>
-        <section class="tree_farm_section">
-            <h1>Multi-Tree Farm</h1>
-            <p>Our Multi-Tree Farm is a fully automated wood farm capable of producing up to 20,000 logs per hour. It efficiently harvests Oak, Birch, and Spruce trees, providing a constant supply of logs with minimal manual effort.</p>
-             <img src="imgs/tree farm.png" alt="bamboo farm">
-            <ul class="tree_farm_list">
-                <li>Production: Up to 20,000 Logs per Hour</li>
-                <li>Supported Trees: Oak, Birch, and Spruce</li>
-                <li>Uses: Building, Crafting, Fuel, Decoration, and Redstone Projects.</li>
-                <li>location: x:-6 y:64 z:142</li>
-            </ul>
+
+        <section id="rules" class="section section-alt">
+            <h2 class="section-title">Server Rules</h2>
+            <p class="section-subtitle">A few simple rules so everyone has a great time.</p>
+
+            <div class="rules-grid">
+                <div class="rule">
+                    <span class="rule-number">1</span>
+                    <h3>Be Respectful</h3>
+                    <p>Treat everyone with kindness. No griefing, stealing, or harassing other players.</p>
+                </div>
+                <div class="rule">
+                    <span class="rule-number">2</span>
+                    <h3>No Cheating</h3>
+                    <p>Keep it survival. No hacking, x-ray, or exploiting bugs that ruin the game for others.</p>
+                </div>
+                <div class="rule">
+                    <span class="rule-number">3</span>
+                    <h3>Clean Up After Yourself</h3>
+                    <p>Fill in creeper holes, don't leave floating trees, and keep the world tidy.</p>
+                </div>
+                <div class="rule">
+                    <span class="rule-number">4</span>
+                    <h3>Have Fun Together</h3>
+                    <p>This is a shared world. Build together, share resources, and make memories.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="join" class="section join-section">
+            <h2 class="section-title">Join the Server</h2>
+            <p class="section-subtitle">Ready to explore our world? Hop in whenever your friends are online.</p>
+            <div class="join-card">
+                <p class="join-label">Java Edition</p>
+                <code class="join-ip">waking-andy.gl.joinmc.link</code>
+                <a href="#join" class="btn btn-primary btn-large">Copy Server IP</a>
+            </div>
+            <div class="join-card">
+                <p class="join-label">Bedrock Edition</p>
+                <code class="join-ip">waking-andy.gl.at.ply.gg:62253</code>
+                <code class="join-ip">147.185.221.194:62253</code>
+                <a href="#join" class="btn btn-primary btn-large">Copy Server IP</a>
+            </div>
         </section>
     </main>
-    <footer>
-            Thanks for visiting our server website! &copy;
+
+    <footer class="site-footer">
+        <p>Thanks for visiting our server website! &copy; Friends Server</p>
     </footer>
 </body>
 </html>
